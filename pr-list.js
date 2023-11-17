@@ -5,14 +5,14 @@
 // GitHubのアクセストークンを環境変数から取得
 const accessToken = process.env.GITHUB_ACCESS_TOKEN;
 if (!accessToken) {
-  console.error('GitHub Access Token is not provided.');
+  console.error("GitHub Access Token is not provided.");
   process.exit(1);
 }
 
 // ユーザー名を環境変数から取得
 const username = process.env.GITHUB_USERNAME;
 if (!username) {
-  console.error('GitHub Username is not provided.');
+  console.error("GitHub Username is not provided.");
   process.exit(1);
 }
 
@@ -33,32 +33,39 @@ const headers = {
 
 // APIリクエストを送信
 fetch(endpointUrl, { headers })
-  .then(response => {
+  .then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     return response.json();
   })
-  .then(data => {
+  .then((data) => {
     const pullRequests = data.items;
-    displayPullRequests(pullRequests);
+    displayMergedPullRequests(pullRequests);
   })
-  .catch(error => {
-    console.error('Error fetching pull requests:', error);
+  .catch((error) => {
+    console.error("Error fetching pull requests:", error);
   });
 
 // Pull Requestの情報を表示する関数
-function displayPullRequests(pullRequests) {
-  pullRequests.forEach(pr => {
+function displayMergedPullRequests(pullRequests) {
+  const mergedPullRequests = pullRequests.filter((pr) => pr.pull_request.merged_at);
+
+  if (mergedPullRequests.length === 0) {
+    console.log("No merged pull requests found.");
+    return;
+  }
+
+  mergedPullRequests.forEach((pr) => {
     console.log(`Pull Request #${pr.number}: ${pr.title}`);
     console.log(`Created at: ${pr.created_at}`);
-    console.log(`Merged at: ${pr.merged_at || 'Not merged'}`);
+    console.log(`Merged at: ${pr.pull_request.merged_at}`);
     if (pr.repository) {
       console.log(`Repository: ${pr.repository.name}`);
     } else {
-      console.log('Repository information not available');
+      console.log("Repository information not available");
     }
-    console.log(`URL: ${pr.html_url}`); // PRのURLを表示
-    console.log('---');
+    console.log(`URL: ${pr.html_url}`);
+    console.log("---");
   });
 }
