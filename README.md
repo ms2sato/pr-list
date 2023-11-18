@@ -1,7 +1,7 @@
 # これはなんですか
 
 自分のコミットが含まれるPull RequestのURLを列挙するスクリプトです。
-全てChatGPTへのコミュニケーションで作成させました。
+ほとんどをChatGPTへのコミュニケーションで作成させました。
 https://chat.openai.com/share/0daa2a2e-d8c7-4f1f-978a-3b8f2212956c
 
 # 使い方
