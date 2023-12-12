@@ -56,16 +56,34 @@ function displayMergedPullRequests(pullRequests) {
     return;
   }
 
+  console.log(`Found ${mergedPullRequests.length} merged pull requests.`);
+  const projects = {}
+
   mergedPullRequests.forEach((pr) => {
+    console.log(JSON.stringify(pr, null, 2));
+
     console.log(`Pull Request #${pr.number}: ${pr.title}`);
     console.log(`Created at: ${pr.created_at}`);
     console.log(`Merged at: ${pr.pull_request.merged_at}`);
-    if (pr.repository) {
-      console.log(`Repository: ${pr.repository.name}`);
+    if (pr.repository_url) {
+      console.log(`Repository: ${pr.repository_url}`);
+      const count = projects[pr.repository_url]
+      if(!count) {
+        projects[pr.repository_url] = 1
+      }
+      else {
+        projects[pr.repository_url] = count + 1
+      }
     } else {
       console.log("Repository information not available");
     }
     console.log(`URL: ${pr.html_url}`);
+
     console.log("---");
   });
+
+  console.log("Total")
+  for(const [key, count] of Object.entries(projects)) {
+    console.log(`${key}:\t${count}`)
+  }
 }
