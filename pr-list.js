@@ -60,7 +60,7 @@ function displayMergedPullRequests(pullRequests) {
   const projects = {}
 
   mergedPullRequests.forEach((pr) => {
-    console.log(JSON.stringify(pr, null, 2));
+    // console.log(JSON.stringify(pr, null, 2));
 
     console.log(`Pull Request #${pr.number}: ${pr.title}`);
     console.log(`Created at: ${pr.created_at}`);
